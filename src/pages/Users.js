@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import CreateUserForm from './CreateUserForm'; // Adjust the path as necessary
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -9,7 +10,7 @@ function Users() {
   }, []);
 
   const fetchUsers = () => {
-    axios.get("/users")
+    axios.get('/users')
       .then(response => {
         setUsers(response.data);
       })
@@ -29,15 +30,20 @@ function Users() {
       });
   };
 
+  const handleUserCreated = (newUser) => {
+    setUsers(prevUsers => [...prevUsers, newUser]);
+  };
+
   return (
     <div>
       <h1>Usuários</h1>
+      <CreateUserForm onUserCreated={handleUserCreated} />
       <div>
         <h2>Lista de Usuários</h2>
         <ul>
           {users.map(user => (
             <li key={user.email}>
-              {user.name} - {user.email} - {user.type}
+              {user.id} - {user.name} - {user.email} - {user.type}
               <button onClick={() => handleDeleteUser(user.email)}>Delete</button>
             </li>
           ))}
